@@ -1,6 +1,7 @@
 package com.pdfasscanned.service;
 
-import com.pdfasscanned.util.ImageProcessor;
+import com.pdfasscanned.dto.pdfprocessors.PdfProcessorsListDto;
+import com.pdfasscanned.util.image.ImageProcessor;
 import com.pdfasscanned.util.converter.ImageToPdfConverter;
 import com.pdfasscanned.util.converter.PdfToImageConverter;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +16,16 @@ import java.util.List;
 @Service
 public class ScanEffectService {
     private final PdfToImageConverter pdfToImageConverter;
-    private final ImageProcessor imageProcessor;
     private final ImageToPdfConverter imageToPdfConverter;
+    private final ImageProcessor imageProcessor;
 
-    public File processPdf(File inputPdf) throws IOException {
+    public File processPdf(File inputPdf, PdfProcessorsListDto processorsList) throws IOException {
         List<BufferedImage> images = pdfToImageConverter.convert(inputPdf);
+
         List<BufferedImage> processedImages = images.stream()
-                .map(imageProcessor::applyScanEffect)
+                .map(image -> imageProcessor.applyScanEffect(image, processorsList))
                 .toList();
+
         return imageToPdfConverter.convert(processedImages, "processed_scanned.pdf");
     }
 }

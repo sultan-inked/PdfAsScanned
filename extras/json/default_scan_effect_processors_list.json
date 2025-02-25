@@ -1,0 +1,22 @@
+{
+  "gradient": {
+    "color1": {
+      "red": 255,
+      "green": 255,
+      "blue": 255,
+      "alpha": 50
+    },
+    "color2": {
+      "red": 240,
+      "green": 240,
+      "blue": 240,
+      "alpha": 51
+    }
+  },
+  "noise": {
+    "noiseRange": 12
+  },
+  "grayscale": {
+    "applicable": false
+  }
+}

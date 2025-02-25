@@ -18,19 +18,14 @@ public class ImageToPdfConverter {
     public File convert(List<BufferedImage> images, String outputPath) throws IOException {
         PDDocument document = new PDDocument();
 
-        images.forEach(image -> {
+        for (BufferedImage image : images) {
             PDPage page = new PDPage(new PDRectangle(image.getWidth(), image.getHeight()));
             document.addPage(page);
-
-            try {
-                PDImageXObject pdImage = PDImageXObject.createFromFileByContent(convertBufferedImageToFile(image), document);
-                try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                    contentStream.drawImage(pdImage, 0, 0, image.getWidth(), image.getHeight());
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            PDImageXObject pdImage = PDImageXObject.createFromFileByContent(convertBufferedImageToFile(image), document);
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                contentStream.drawImage(pdImage, 0, 0, image.getWidth(), image.getHeight());
             }
-        });
+        }
 
         File outputFile = new File(outputPath);
         document.save(outputFile);
